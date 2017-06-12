@@ -16,7 +16,8 @@
 			elements: {
 				visit: 'visit',
 				slider: 'slider',
-				errorBox: 'error-box'
+				errorBox: 'error-box',
+				animator: 'animator'
 			}
 		},
     	core: new Core(),

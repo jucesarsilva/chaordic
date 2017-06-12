@@ -112,6 +112,7 @@ function Core() {
 		visitElem = document.getElementById(config.elements.visit);
 		sliderElem = document.getElementById(config.elements.slider);
 		errorBoxElem = document.getElementById(config.elements.errorBox);
+		animatorElem = document.getElementById(config.elements.animator);
 		return chaordicElem && visitElem && sliderElem && errorBoxElem;
 	}
 
@@ -132,7 +133,7 @@ function Core() {
 	}
 
 	function createSlider() {
-		animatorElem = document.createElement('div');
+		
 		for (var i = 0, len = config.numbercards; i < len; i++) {
 			var card = createCard();
 			card.classList.add('slide-card');
@@ -146,7 +147,6 @@ function Core() {
 			collection.recommendation[i].price, 
 			collection.recommendation[i].productInfo.paymentConditions);
 			card.appendChild(link);
-			animatorElem.setAttribute('id', 'animator');
 			animatorElem.appendChild(card);
 		}
 
