@@ -1,0 +1,10 @@
+{
+  "name": "chaordic",
+  "description": "Test",
+  "version": "1.0.0",
+  "homepage": "https://github.com/jucesarsilva/chaordic",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+  }
+}
