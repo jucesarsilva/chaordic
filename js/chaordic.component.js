@@ -55,12 +55,12 @@ function Chaordic(config) {
 		config.url = "/js/mockup.json";
 
 		
-    	getData().then(function(res) {
+    	_this.getData().then(function(res) {
     		collection = JSON.parse(JSON.stringify(res.data));
-    		if (!configElements()) return;
-    		calculate();
-    		createVisit();
-    		createSlider();
+    		if (!_this.configElements()) return;
+    		_this.calculate();
+    		_this.createVisit();
+    		_this.createSlider();
     		setInterval(calculate, 100);
     	}, function(res) {
     		console.error('Não foi possivel obter os dados do servidor.')
@@ -122,7 +122,7 @@ function Chaordic(config) {
 		slider.card.width = offset / config.numbercards;
 		slider.card.height = slider.card.width * 1.35;
 
-		update();
+		_this.update();
 	}
 
 	function updateImgHeight(images) {
@@ -139,14 +139,14 @@ function Chaordic(config) {
 		for (var i = 0; i < animatorElem.childNodes.length; i++) { 
 		    if (animatorElem.childNodes[i].firstChild.className === 'card slide-card') {
 	    		animatorElem.childNodes[i].firstChild.style.width = (parseInt(slider.card.width)).toString() + 'px';
-	    		updateImgHeight(animatorElem.childNodes[i].firstChild);
+	    		_this.updateImgHeight(animatorElem.childNodes[i].firstChild);
 		    }    
 		}
 
 		for (var i = 0; i < visitElem.childNodes.length; i++) { 
 		    if (visitElem.childNodes[i].firstChild.className === 'card slide-card') {
 	    		visitElem.childNodes[i].firstChild.style.width = (parseInt(slider.card.width)).toString() + 'px';
-	    		updateImgHeight(visitElem.childNodes[i].firstChild);
+	    		_this.updateImgHeight(visitElem.childNodes[i].firstChild);
 		    }    
 		}
 
@@ -308,13 +308,13 @@ function Chaordic(config) {
 	function getData() {
 		return new Promise(function (resolve, reject) {
 			var request = getXHR();
-			request.onreadystatechange = _onReady;
+			request.onreadystatechange = onReady;
 			request.open("GET", config.url, true);
 			request.responseType = "json";
 			request.setRequestHeader('Access-Control-Allow-Headers', '*');
 			request.send();
 
-			function _onReady() {
+			function onReady() {
 				if(request.readyState == 4) {
 	        		if(request.status === 200) {
 	            		resolve(request.response);
