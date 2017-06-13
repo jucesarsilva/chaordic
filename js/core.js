@@ -19,7 +19,6 @@ function Core() {
     var sliderElem;
     var visitElem;
     var chaordicElem;
-    var errorBoxElem;
     var animatorElem;
     var margin = 200;
     var commandLeft;
@@ -35,19 +34,13 @@ function Core() {
 
     	window.Chaordic.requester.getData().then(function(res) {
     		collection = JSON.parse(JSON.stringify(res.data));
-    		if (!configElements()) {
-    			console.error("Ids do component não encontrados.");
-    			return;
-    		}
-    		chaordicElem.classList.remove('hide');
-    		chaordicElem.classList.add('show');
+    		if (!configElements()) return;
     		calculate();
     		createVisit();
     		createSlider();
     		setInterval(calculate, 100);
     	}, function(res) {
-			errorBoxElem.classList.remove('hide');
-			errorBoxElem.classList.add('show');
+    		console.error('Não foi possivel obter os dados do servidor.')
     	});
 	}
 
@@ -88,11 +81,29 @@ function Core() {
 		update();
 	}
 
+	function updateImgHeight(images) {
+		var link = images.childNodes[0];
+		for (var i = 0; i < link.childNodes.length; i++) { 
+		    if (link.childNodes[i].className === 'card-thumb') {
+	    		link.childNodes[i].width = slider.card.width - 10;
+				link.childNodes[i].height = slider.card.height - 10;
+		    }    
+		}
+	}
+
 	function update() {
-		var cards = document.getElementsByClassName("card");
-		for (var i = 0; i < cards.length; i++) {
-		    cards[i].style.width = (slider.card.width).toString() + 'px';
-		    if (i === 0) cards[i].style.margin = 'auto';
+		for (var i = 0; i < animatorElem.childNodes.length; i++) { 
+		    if (animatorElem.childNodes[i].className === 'slide-card') {
+	    		animatorElem.childNodes[i].style.width = (slider.card.width).toString() + 'px';
+	    		updateImgHeight(animatorElem.childNodes[i]);
+		    }    
+		}
+
+		for (var i = 0; i < visitElem.childNodes.length; i++) { 
+		    if (visitElem.childNodes[i].className === 'card') {
+	    		visitElem.childNodes[i].style.width = (slider.card.width).toString() + 'px';
+	    		updateImgHeight(animatorElem.childNodes[i]);
+		    }    
 		}
 
 		var images = document.getElementsByTagName("img");
@@ -101,19 +112,67 @@ function Core() {
 			images[i].height = slider.card.height - 10;
 		}
 
-		commandLeft = document.getElementById('command-left');
-		if (commandLeft) commandLeft.style.height = (slider.height + 15).toString() + 'px';
-		commandRight = document.getElementById('command-right');
-		if (commandRight) commandRight.style.height = (slider.height + 15).toString() + 'px';
+		if (commandLeft) 
+			commandLeft.style.height = (slider.height).toString() + 'px';
+		if (commandRight) 
+			commandRight.style.height = (slider.height).toString() + 'px';
 	}
 
 	function configElements() {
 		chaordicElem = document.getElementById(config.id);
-		visitElem = document.getElementById(config.elements.visit);
-		sliderElem = document.getElementById(config.elements.slider);
-		errorBoxElem = document.getElementById(config.elements.errorBox);
-		animatorElem = document.getElementById(config.elements.animator);
-		return chaordicElem && visitElem && sliderElem && errorBoxElem;
+
+		if (!chaordicElem) {
+			console.error("Não foi possivel obter o elemento do Id especificado.");
+			return false;
+		}
+
+		chaordicElem.innerHTML = '<div class="container">' +
+									'<div class="visit"></div>'+
+									'<div class="slider">' +
+										'<div class="animator"></div>' +
+										'<div class="command-right"></div>' +
+										'<div class="command-left"></div>' +
+									'</div>' +
+								'</div>';
+
+		var container = chaordicElem.childNodes[0];
+
+		for (var i = 0; i < container.childNodes.length; i++) { 
+		    switch(container.childNodes[i].className) {
+		    	case 'visit':
+		    		visitElem = container.childNodes[i];
+		    		break;
+	    		case 'slider':
+		    		sliderElem = container.childNodes[i];
+		    		break;
+		    }    
+		}
+
+		for (var i = 0; i < sliderElem.childNodes.length; i++) { 
+		    switch(sliderElem.childNodes[i].className) {
+		    	case 'animator':
+		    		animatorElem = sliderElem.childNodes[i];
+		    		break;
+	    		case 'command-left':
+		    		commandLeft = sliderElem.childNodes[i];
+		    		if (commandLeft.addEventListener) {
+				  		commandLeft.addEventListener('click', onLeft, false); 
+					} else if (commandLeft.attachEvent)  {
+				 		commandLeft.attachEvent('onclick', onLeft);
+					}
+		    		break;
+	    		case 'command-right':
+		    		commandRight = sliderElem.childNodes[i];
+		    		if (commandRight.addEventListener) {
+				  		commandRight.addEventListener('click', onRight, false); 
+					} else if (commandRight.attachEvent)  {
+				 		commandRight.attachEvent('onclick', onRight);
+					}
+		    		break;
+		    }    
+		}
+
+		return chaordicElem;
 	}
 
 	function createVisit() {
@@ -132,8 +191,7 @@ function Core() {
 		visitElem.appendChild(card);
 	}
 
-	function createSlider() {
-		
+	function createSlider() {	
 		for (var i = 0, len = config.numbercards; i < len; i++) {
 			var card = createCard();
 			card.classList.add('slide-card');
@@ -151,34 +209,6 @@ function Core() {
 		}
 
 		sliderElem.appendChild(animatorElem);
-
-		createCommands();
-	}
-
-	function createCommands() {
-
-		commandRight = document.createElement("div");
-		commandRight.classList.add('command-right');
-		commandRight.setAttribute("id", 'command-right');
-
-		if (commandRight.addEventListener) {
-	  		commandRight.addEventListener('click', onRight, false); 
-		} else if (commandRight.attachEvent)  {
-	 		commandRight.attachEvent('onclick', onRight);
-		}
-		
-		commandLeft = document.createElement("div");
-		commandLeft.classList.add('command-left');
-		commandLeft.setAttribute("id", 'command-left');
-
-		if (commandLeft.addEventListener) {
-	  		commandLeft.addEventListener('click', onLeft, false); 
-		} else if (commandLeft.attachEvent)  {
-	 		commandLeft.attachEvent('onclick', onLeft);
-		}
-
-		sliderElem.appendChild(commandRight);
-		sliderElem.appendChild(commandLeft);
 	}
 
 	function onRight(e) {
@@ -251,6 +281,7 @@ function Core() {
 		img.src = url;
 		img.width = slider.card.width - 10;
 		img.height = slider.card.height - 10;
+		img.classList.add('card-thumb');
 		return img;
 	}
 

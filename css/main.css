@@ -1,6 +1,6 @@
 
 /* App */
-.chaordic .main {
+.main {
 	border: 5px solid #bdcfde;
     margin: 10px;
     border-radius: 5px 5px 5px 5px;
@@ -9,27 +9,18 @@
     overflow: hidden;
 }
 
-.chaordic .hide {
-	display: none;
-}
-
-.chaordic .show {
-	display: block;
-}
-
-#chaordic {
+.container {
 	display: flex;
 	padding: 5px 10px 10px 10px;
 	height: 100%;
 }
 
-#chaordic a {
+.container a {
 	text-decoration: none;
 	height: 100%;
-	height: 0 auto;
 }
 
-#visit {
+.visit {
 	width: 20%;
 	background-color: #fff;
 	margin-right: 10px;
@@ -40,7 +31,7 @@
 	z-index: 11;
 }
 
-#slider {
+.slider {
 	display: flex;
 	width: 80%;
 	margin: 0 auto;
@@ -48,16 +39,16 @@
 	height: 100%;
 }
 
-#animator {
+.animator {
 	display: flex;
 	margin: 0 auto;
 }
 
-.chaordic .card {
-	padding: 10px;
+.card {
+    padding: 10px 0px 10px 10px;
 }
 
-.chaordic .card:hover {
+.card:hover {
 	background: #d7e9f7;
 	background: -moz-linear-gradient(top, #d7e9f7 0%, #ffffff 100%);
 	background: -webkit-linear-gradient(top, #d7e9f7 0%,#ffffff 100%);
@@ -65,33 +56,33 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d7e9f7', endColorstr='#ffffff',GradientType=0 );
 }
 
-.chaordic .content {
+.content {
 	padding: 5px;
 	text-align: left;
 	max-height: 1000px;
 }
 
-.chaordic .detail {
+.detail {
 	margin-top: 20px;
 	color: #666;
 }
 
-.chaordic .old-price {
+.old-price {
 	margin-top: 10px;
 	color: #666;
 }
 
-.chaordic .price {
+.price {
 	margin-top: 10px;
 	color: #cc0000;
 }
 
-.chaordic .condition {
+.condition {
 	margin-top: 5px;
 	color: #cc0000;
 }
 
-.chaordic .header {
+.header {
 	margin: 0px;
 	padding: 10px;
 	height: 70px;
@@ -103,28 +94,27 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f7fc', endColorstr='#d7e9f7',GradientType=0 );
 }
 
-.chaordic .destaque {
+.destaque {
 	font-size: 24px;
 	font-weight: bold;
 }
 
-.chaordic strong {
+strong {
 	font-weight: bold;
 	font-size: 18px;
 }
 
-.chaordic .command-right {
+.command-right {
 	position: absolute;
-	top: 0px;
-	right: 15px;
-	width: 50px;
-	background: transparent;
-	cursor: pointer;
-	margin-top: 20px;
-	z-index: 10;
+    right: 23px;
+    margin-top: -10px;
+    margin-left: -10px;
+    width: 50px;
+    cursor: pointer;
+    z-index: 10;
 }
 
-.chaordic .command-right:after, .chaordic .command-right:before {
+.command-right:after, .command-right:before {
 	right: -30px;
     top: 30%;
 	border: solid transparent;
@@ -132,23 +122,22 @@
 	height: 0;
 	width: 0;
 	position: absolute;
-	pointer-events: none;
 }
 
-.chaordic .command-right:after {
+.command-right:after {
 	border-color: rgba(136, 183, 213, 0);
 	border-left-color: #88b7d5;
 	border-width: 30px;
 	margin-top: -30px;
 }
-.chaordic .command-right:before {
+.command-right:before {
 	border-color: rgba(0, 0, 0, 0);
 	border-left-color: transparent;
 	border-width: 36px;
 	margin-top: -36px;
 }
 
-.chaordic .command-right:hover {
+.command-right:hover {
 	background: #ffffff;
 	background: -moz-linear-gradient(left, transparent 0%, #d7e9f7 100%);
 	background: -webkit-linear-gradient(left, transparent 0%, #d7e9f7 100%);
@@ -156,18 +145,16 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='transparent', endColorstr='#d7e9f7',GradientType=1 );
 	
 }
-.chaordic .command-left {
+.command-left {
 	position: absolute;
-	top: 0px;
-	margin-top: 20px;
-	margin-left: -10px;
-	width: 50px;
-	background: transparent;
-	cursor: pointer;
-	z-index: 10;
+    margin-top: -10px;
+    margin-left: -10px;
+    width: 50px;
+    cursor: pointer;
+    z-index: 10;
 }
 
-.chaordic .command-left:after, .chaordic .command-left:before {
+.command-left:after, .command-left:before {
 	left: -30px;
     top: 30%;
 	border: solid transparent;
@@ -178,21 +165,21 @@
 	pointer-events: none;
 }
 
-.chaordic .command-left:after {
+.command-left:after {
 	border-color: rgba(136, 183, 213, 0);
 	border-right-color: #88b7d5;
 	border-width: 30px;
 	margin-top: -30px;
 }
 
-.chaordic .command-left:before {
+.command-left:before {
 	border-color: rgba(0, 0, 0, 0);
 	border-right-color: transparent;
 	border-width: 36px;
 	margin-top: -36px;
 }
 
-.chaordic .command-left:hover {
+.command-left:hover {
 	background: #d7e9f7;
 	background: -moz-linear-gradient(left, #d7e9f7 0%, transparent 100%);
 	background: -webkit-linear-gradient(left, #d7e9f7 0%, transparent 100%);
@@ -212,19 +199,19 @@
 }
 
 .right {
-    -webkit-transform:translateX(100px);
-    -moz-transform:translateX(100px);
-    -ms-transform:translateX(100px);
-    -o-transform:translateX(100px);
-    transform:translateX(100px);
+    -webkit-transform:translateX(25%);
+    -moz-transform:translateX(25%);
+    -ms-transform:translateX(25%);
+    -o-transform:translateX(25%);
+    transform:translateX(25%);
 }
 
 .left {
-    -webkit-transform:translateX(-100px);
-    -moz-transform:translateX(-100px);
-    -ms-transform:translateX(-100px);
-    -o-transform:translateX(-100px);
-    transform:translateX(-100px);
+    -webkit-transform:translateX(-25%);
+    -moz-transform:translateX(-25%);
+    -ms-transform:translateX(-25%);
+    -o-transform:translateX(-25%);
+    transform:translateX(-25%);
 }
 
 /* tooltip */
