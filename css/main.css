@@ -9,6 +9,34 @@
     overflow: hidden;
 }
 
+.title-left {
+	width: 20%;
+	float: left;
+	font-size: 30px;
+	color: #0043af;
+}
+.title-rigth {
+	width: 80%;
+	float: right;
+	font-size: 30px;
+	color: #0043af;
+}
+
+hr {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: #0043af;
+  background-color: #0043af; 
+}
+
+h5 {
+  color: #0043af;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 30px;
+}
+
 .container {
 	display: flex;
 	height: 100%;

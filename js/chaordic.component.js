@@ -126,40 +126,36 @@ function Chaordic(config) {
 	}
 
 	function updateImgHeight(images) {
-		var link = images.childNodes[0];
-		for (var i = 0; i < link.childNodes.length; i++) { 
-		    if (link.childNodes[i].className === 'card-thumb') {
-	    		link.childNodes[i].width = slider.card.width - 10;
-				link.childNodes[i].height = slider.card.height - 10;
+		var img = images.firstChild;
+		for (var i = 0; i < img.childNodes.length; i++) { 
+		    if (img.childNodes[i].className === 'card-thumb') {
+	    		img.childNodes[i].style.width = (parseInt(slider.card.width - 5)).toString() + 'px';
+				img.childNodes[i].style.height = (parseInt(slider.card.height - 10)).toString() + 'px';
 		    }    
 		}
 	}
 
 	function update() {
 		for (var i = 0; i < animatorElem.childNodes.length; i++) { 
-		    if (animatorElem.childNodes[i].className === 'slide-card') {
-	    		animatorElem.childNodes[i].style.width = (slider.card.width).toString() + 'px';
-	    		updateImgHeight(animatorElem.childNodes[i]);
+		    if (animatorElem.childNodes[i].firstChild.className === 'card slide-card') {
+	    		animatorElem.childNodes[i].firstChild.style.width = (parseInt(slider.card.width)).toString() + 'px';
+	    		updateImgHeight(animatorElem.childNodes[i].firstChild);
 		    }    
 		}
 
 		for (var i = 0; i < visitElem.childNodes.length; i++) { 
-		    if (visitElem.childNodes[i].className === 'card') {
-	    		visitElem.childNodes[i].style.width = (slider.card.width).toString() + 'px';
-	    		updateImgHeight(animatorElem.childNodes[i]);
+		    if (visitElem.childNodes[i].firstChild.className === 'card slide-card') {
+	    		visitElem.childNodes[i].firstChild.style.width = (parseInt(slider.card.width)).toString() + 'px';
+	    		updateImgHeight(visitElem.childNodes[i].firstChild);
 		    }    
 		}
 
-		var images = document.getElementsByTagName("img");
-		for (var i = 0; i < images.length; i++) {
-		    images[i].width = slider.card.width - 10;
-			images[i].height = slider.card.height - 10;
-		}
-
-		if (commandLeft) 
+		if (commandLeft) {
 			commandLeft.style.height = (slider.height).toString() + 'px';
-		if (commandRight) 
+		}
+		if (commandRight) {
 			commandRight.style.height = (slider.height).toString() + 'px';
+		}
 	}
 
 	function configElements() {
@@ -222,8 +218,7 @@ function Chaordic(config) {
 	function createVisit() {
 		var template = '<div class="card slide-card" style="width:'+ slider.card.width +'px;">' +
 							'<a href="'+ collection.reference.item.detailUrl +'" target="_blank">' +
-								'<img class="card-thumb" src="'+ collection.reference.item.imageName + 
-									 '" style="width:'+ (slider.card.width - 10) +'px;height:'+ (slider.card.height - 10) +'px;">'+
+								'<img class="card-thumb" src="'+ collection.reference.item.imageName +'">'+
 								'</a>' +
 								'<p class="tooltip content detail" data-tooltip="'+ collection.reference.item.name +'">'+ 
 									minimize(collection.reference.item.name) +
