@@ -192,7 +192,7 @@ function Core() {
 	}
 
 	function createSlider() {	
-		for (var i = 0, len = config.numbercards; i < len; i++) {
+		for (var i = 0, len = collection.recommendation.length; i < len; i++) {
 			var card = createCard();
 			card.classList.add('slide-card');
 			var img  = createImage(img, collection.recommendation[i].imageName);
@@ -212,27 +212,35 @@ function Core() {
 	}
 
 	function onRight(e) {
-		animatorElem.classList.add('animation');
-		animatorElem.classList.remove('left');
-		animatorElem.classList.add('right');
-		removeAnimation();
 		pagination.offset += 1;
 		if (pagination.offset > (collection.recommendation.length - config.numbercards)) {
 			pagination.offset = collection.recommendation.length - config.numbercards;
 		}
-		sync();
+		var offset = animatorElem.clientWidth / collection.recommendation.length;
+		animatorElem.classList.add('animation');
+		var transform = 'translateX(-' + offset * pagination.offset + 'px)';
+		animatorElem.style.webkitTransform = transform;
+		animatorElem.style.MozTransform = transform;
+		animatorElem.style.msTransform = transform;
+		animatorElem.style.OTransform = transform;
+		animatorElem.style.transform = transform;
+		removeAnimation();
 	}
 
 	function onLeft(e) {
-		animatorElem.classList.add('animation');
-		animatorElem.classList.remove('right');
-		animatorElem.classList.add('left');
-		removeAnimation();
 		pagination.offset -= 1;
 		if (pagination.offset < 0) {
 			pagination.offset = 0;
 		}
-		sync();
+		var offset = animatorElem.clientWidth / collection.recommendation.length;
+		animatorElem.classList.add('animation');
+		var transform = 'translateX(-' + offset * pagination.offset + 'px)';
+		animatorElem.style.webkitTransform = transform;
+		animatorElem.style.MozTransform = transform;
+		animatorElem.style.msTransform = transform;
+		animatorElem.style.OTransform = transform;
+		animatorElem.style.transform = transform;
+		removeAnimation();
 	}
 
 	function removeAnimation() {
@@ -241,32 +249,6 @@ function Core() {
 			animatorElem.classList.remove('left');
 			animatorElem.classList.remove('right');
 		}, 500);
-	}
-
-	function sync() {
-		var details = document.querySelectorAll(".slide-card .detail");
-		var oldPrices = document.querySelectorAll(".slide-card .old-price");
-		var prices = document.querySelectorAll(".slide-card .price");
-		var conditions = document.querySelectorAll(".slide-card .condition");
-		var images = document.querySelectorAll(".slide-card img");
-		var links = document.querySelectorAll(".slide-card a");
-		var i = 0;
-		for (var j = pagination.offset, len = config.numbercards + pagination.offset; j < len; j++) {
-		    details[i].textContent = minimize(collection.recommendation[j].name);
-	    	conditions[i].innerHTML = collection.recommendation[j].productInfo.paymentConditions;
-			images[i].src = collection.recommendation[j].imageName;
-			links.href = collection.recommendation[j].detailUrl;
-	    	if (oldPrices[i]) {
-	    		if (oldPrices[i].oldPrice)
-					oldPrices[i].textContent = "De: " + collection.recommendation[j].oldPrice;
-			}
-	    	if (prices[i].oldPrice) {
-				prices[i].innerHTML = "Por: " + '<span class="destaque">' + collection.recommendation[j].price + '</span>';
-			} else {
-				prices[i].innerHTML = collection.recommendation[j].price;
-			}
-			i++;
-		}
 	}
 
 	function createCard() {

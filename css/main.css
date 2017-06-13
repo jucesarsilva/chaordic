@@ -11,7 +11,6 @@
 
 .container {
 	display: flex;
-	padding: 5px 10px 10px 10px;
 	height: 100%;
 }
 
@@ -45,7 +44,8 @@
 }
 
 .card {
-    padding: 10px 0px 10px 10px;
+    padding: 10px 5px 10px 10px;
+    margin-right: 5px;
 }
 
 .card:hover {
@@ -194,24 +194,6 @@ strong {
   -ms-transition:all .5s ease-out;
   -o-transition:all .5s ease-out;
   transition:all .5s ease-out;
-  transform-style: preserve-3d;
-  opacity: 1;
-}
-
-.right {
-    -webkit-transform:translateX(25%);
-    -moz-transform:translateX(25%);
-    -ms-transform:translateX(25%);
-    -o-transform:translateX(25%);
-    transform:translateX(25%);
-}
-
-.left {
-    -webkit-transform:translateX(-25%);
-    -moz-transform:translateX(-25%);
-    -ms-transform:translateX(-25%);
-    -o-transform:translateX(-25%);
-    transform:translateX(-25%);
 }
 
 /* tooltip */
