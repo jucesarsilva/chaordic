@@ -2,7 +2,7 @@
  * @author julio_c.silva@outlook.com
  * @since 10/06/2017
  */
-function Core() {
+function Chaordic(config) {
 	'use strict';
 
 	var _this = this;
@@ -29,10 +29,33 @@ function Core() {
     }
     var collection;
 
-    var ready = function _ready() {
-    	config = window.Chaordic.config;
+    this.init = init;
+    this.calculate = calculate;
+    this.updateImgHeight = updateImgHeight;
+    this.update = update;
+    this.configElements = configElements;
+    this.createVisit = createVisit;
+    this.createSlider = createSlider;
+    this.onRight = onRight;
+    this.onLeft = onLeft;
+    this.minimize = minimize;
+    this.ready = ready;
+    this.getData = getData;
+    this.getXHR;
 
-    	window.Chaordic.requester.getData().then(function(res) {
+    function ready() {
+    	if(!config) {
+    		console.error("Objeto de configuração não encontrado.");
+    	}
+    	
+    	/**
+    	 * overwrite url (API possui limitações de acesso no header: CORs)
+    	 * para tanto um mock foi introduzido
+    	 */
+		config.url = "/js/mockup.json";
+
+		
+    	getData().then(function(res) {
     		collection = JSON.parse(JSON.stringify(res.data));
     		if (!configElements()) return;
     		calculate();
@@ -44,7 +67,7 @@ function Core() {
     	});
 	}
 
-    this.init = function _init() {
+    function init() {
 	    var attacher = document.addEventListener ? {
 	        add: 'addEventListener',
 	        remove: 'removeEventListener'
@@ -66,9 +89,30 @@ function Core() {
 	        document[attacher.add]("DOMContentLoaded", completed);
 	        window[attacher.add]("load", completed);
 	    }
-	};
+	}
 
-	this.init();
+	function getXHR() {
+		var isIE = !!document.attachEvent;
+		
+		if(isIE) {
+		      var msxml = [
+		        'MSXML2.XMLHTTP.3.0',
+		        'MSXML2.XMLHTTP',
+		        'Microsoft.XMLHTTP'
+		      ];
+			for (var i=0, len = msxml.length; i < len; ++i) {
+		        try {
+		          	getXHR = function() {
+		            	return new ActiveXObject(msxml[i]);
+		          	};
+		          	break;
+		        }
+		        catch(e) {}
+		    }
+		};
+
+		return new XMLHttpRequest;
+	}
 
 	function calculate() {
 		slider.width = sliderElem.clientWidth;
@@ -176,38 +220,55 @@ function Core() {
 	}
 
 	function createVisit() {
-		var card = createCard();
-		var img  = document.createElement("img");
-		var img  = createImage(img, collection.reference.item.imageName);
-		var link = document.createElement("a");
-		link.href = collection.reference.item.detailUrl;
-		link.appendChild(img);
-		link = createDetails(link, 
-			collection.reference.item.name, 
-			collection.reference.item.oldPrice, 
-			collection.reference.item.price, 
-			collection.reference.item.productInfo.paymentConditions);
-		card.appendChild(link);
-		visitElem.appendChild(card);
+		var template = '<div class="card slide-card" style="width:'+ slider.card.width +'px;">' +
+							'<a href="'+ collection.reference.item.detailUrl +'" target="_blank">' +
+								'<img class="card-thumb" src="'+ collection.reference.item.imageName + 
+									 '" style="width:'+ (slider.card.width - 10) +'px;height:'+ (slider.card.height - 10) +'px;">'+
+								'</a>' +
+								'<p class="tooltip content detail" data-tooltip="'+ collection.reference.item.name +'">'+ 
+									minimize(collection.reference.item.name) +
+								'</p>'+
+								'<p class="content old-price">' +
+									(collection.reference.item.oldPrice = !collection.reference.item.oldPrice ? '' : "De: " + collection.reference.item.oldPrice) +
+								'</p>'+ 
+								'<p class="content price">' +
+									(collection.reference.item.price = !collection.reference.item.oldPrice ? collection.reference.item.price : "Por: " + '<span class="destaque">' + collection.reference.item.price + '</span>') +
+								'</p>'+ 
+								'<p class="content condition">' +
+									collection.reference.item.productInfo.paymentConditions +
+								'</p>'+ 
+							'</a>' +
+						'<div>';
+		var card = document.createElement("div");
+		card.innerHTML = template;
+		visitElem.appendChild(card);	
 	}
 
-	function createSlider() {	
+	function createSlider() {
 		for (var i = 0, len = collection.recommendation.length; i < len; i++) {
-			var card = createCard();
-			card.classList.add('slide-card');
-			var img  = createImage(img, collection.recommendation[i].imageName);
-			var link = document.createElement("a");
-			link.href = collection.recommendation[i].detailUrl;
-			link.appendChild(img);
-			link = createDetails(link, 
-			collection.recommendation[i].name, 
-			collection.recommendation[i].oldPrice, 
-			collection.recommendation[i].price, 
-			collection.recommendation[i].productInfo.paymentConditions);
-			card.appendChild(link);
+		var template = '<div class="card slide-card" style="width:'+ slider.card.width +'px;">' +
+							'<a href="'+ collection.recommendation[i].detailUrl +'" target="_blank">' +
+								'<img class="card-thumb" src="'+ collection.recommendation[i].imageName + 
+									 '" style="width:'+ (slider.card.width - 10) +'px;height:'+ (slider.card.height - 10) +'px;">'+
+								'</a>' +
+								'<p class="tooltip content detail" data-tooltip="'+ collection.recommendation[i].name +'">'+ 
+									minimize(collection.recommendation[i].name) +
+								'</p>'+
+								'<p class="content old-price">' +
+									(collection.recommendation[i].oldPrice = !collection.recommendation[i].oldPrice ? '' : "De: " + collection.recommendation[i].oldPrice) +
+								'</p>'+ 
+								'<p class="content price">' +
+									(collection.recommendation[i].price = !collection.recommendation[i].oldPrice ? collection.recommendation[i].price : "Por: " + '<span class="destaque">' + collection.recommendation[i].price + '</span>') +
+								'</p>'+ 
+								'<p class="content condition">' +
+									collection.recommendation[i].productInfo.paymentConditions +
+								'</p>'+ 
+							'</a>' +
+						'<div>';	
+			var card = document.createElement("div");
+			card.innerHTML = template;
 			animatorElem.appendChild(card);
 		}
-
 		sliderElem.appendChild(animatorElem);
 	}
 
@@ -224,7 +285,6 @@ function Core() {
 		animatorElem.style.msTransform = transform;
 		animatorElem.style.OTransform = transform;
 		animatorElem.style.transform = transform;
-		removeAnimation();
 	}
 
 	function onLeft(e) {
@@ -240,70 +300,6 @@ function Core() {
 		animatorElem.style.msTransform = transform;
 		animatorElem.style.OTransform = transform;
 		animatorElem.style.transform = transform;
-		removeAnimation();
-	}
-
-	function removeAnimation() {
-		var loop = setTimeout(function() {
-			clearTimeout(loop);
-			animatorElem.classList.remove('left');
-			animatorElem.classList.remove('right');
-		}, 500);
-	}
-
-	function createCard() {
-		var card = document.createElement("div"); 
-		card.classList.add('card');
-		card.style.width = (slider.card.width).toString() + 'px';
-		return card;
-	}
-
-	function createImage(img, url) {
-		var img  = document.createElement("img");
-		img.src = url;
-		img.width = slider.card.width - 10;
-		img.height = slider.card.height - 10;
-		img.classList.add('card-thumb');
-		return img;
-	}
-
-	function createDetails(link, detail, oldPrice, price, condition) {
-		var _detail = document.createElement("p");
-		_detail.textContent = minimize(detail);
-		_detail.classList.add('tooltip');
-		_detail.classList.add('content');
-		_detail.classList.add('detail');
-		_detail.setAttribute("data-tooltip", detail);
-		link.appendChild(_detail);
-
-		if (oldPrice) {
-			var _oldPrice = document.createElement("p");
-			_oldPrice.textContent = "De: " + oldPrice;
-			_oldPrice.classList.add('content');
-			_oldPrice.classList.add('old-price');
-			link.appendChild(_oldPrice);
-		}
-
-		var _price = document.createElement("p");
-		if (oldPrice) {
-			_price.innerHTML = "Por: " + '<span class="destaque">' + price + '</span>';
-			var span = document.createElement("span");
-		} else {
-			_price.innerHTML = price;
-		}
-		_price.classList.add('content');
-		_price.classList.add('price');
-		link.appendChild(_price);
-
-		var _condition = document.createElement("p");
-		_condition.innerHTML  = condition;
-		_condition.classList.add('content');
-		_condition.classList.add('condition');
-		link.appendChild(_condition);
-
-		link.target = "_blank";
-
-		return link;
 	}
 
 	function minimize(text) {
@@ -314,7 +310,31 @@ function Core() {
 		}
 	}
 
+	function getData() {
+		return new Promise(function (resolve, reject) {
+			var request = getXHR();
+			request.onreadystatechange = _onReady;
+			request.open("GET", config.url, true);
+			request.responseType = "json";
+			request.setRequestHeader('Access-Control-Allow-Headers', '*');
+			request.send();
+
+			function _onReady() {
+				if(request.readyState == 4) {
+	        		if(request.status === 200) {
+	            		resolve(request.response);
+	        		} else {
+	        			var reason = new Error('Houve um problema ou obter os dados do servidor.');
+            			reject(reason);
+	        		}
+    			}
+			}
+    	});
+	}
+
 	window.onbeforeunload = function (e) {
 		clearInterval(timer);
 	};
+
+	this.init();
 }
