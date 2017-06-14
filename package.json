@@ -17,6 +17,7 @@
     "gulp-watch": "^4.3.11",
     "http-server": "^0.9.0",
     "jasmine-core": "^2.4.1",
+    "jshint": "^2.9.4",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.3",
     "karma-firefox-launcher": "^0.1.7",
@@ -27,8 +28,13 @@
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1 ./",
+    "start": "http-server -a localhost -p 8000 -c-1 ./dist",
     "pretest": "npm install",
     "test": "karma start karma.conf.js"
+  },
+  "dependencies": {
+    "gulp-jscs": "^4.0.0",
+    "gulp-jshint": "^2.0.4",
+    "jshint-stylish": "^2.2.1"
   }
 }

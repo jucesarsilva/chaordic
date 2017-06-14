@@ -11,44 +11,55 @@ var cssmin = require('gulp-cssmin');
 
 gulp.task("default", function () {
     gutil.log("Gulp is working!");
-    gulp.start('watch');
+    //gulp.start('jshint');
+    gulp.start('uglify');
+    gulp.start('minify');
+    gulp.start('minify-css');
+    gulp.start('copy');
+    //gulp.start('watch');
 });
 
 
+gulp.task('copy', function () {
+    gulp.src('./js/*.json')
+        .pipe(gulp.dest('./dist'));
+});
 
 gulp.task('jshint', function () {
     gutil.log('Starting jshint task.');
     return gulp.src([
-        './js/*.js'
+        'js/*.js'
     ])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
 gulp.task('uglify', function () {
     gutil.log('Starting uglify task.');
-    return gulp.src(['./js/*.js'])
+    return gulp.src([
+        'js/*.js'
+    ])
     .pipe(uglify())
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
 gulp.task('minify', function() {
     gutil.log('Starting minify task.');
     return gulp.src([
-        './index.html'
+        'index.html'
     ])
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('./dist'));
 });
 gulp.task('minify-css', function () {
     gutil.log('Starting minify-css task.');
-    return gulp.src(['./css/*.css'])
+    return gulp.src(['css/*.css'])
     .pipe(cssmin())
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
 
 
 gulp.task('watch', function () {
     gutil.log('Starting watch task.');
-    gulp.watch('./js/*.js', function (event) {
+    gulp.watch('js/*.js', function (event) {
         gutil.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
         gulp.start('jshint');
         gulp.start('uglify');

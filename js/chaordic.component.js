@@ -52,7 +52,7 @@ function Chaordic(config) {
     	 * overwrite url (API possui limitações de acesso no header: CORs)
     	 * para tanto um mock foi introduzido
     	 */
-		config.url = "/js/mockup.json";
+		config.url = "mockup.json";
 
 		
     	_this.getData().then(function(res) {
