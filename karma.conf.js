@@ -5,8 +5,8 @@ module.exports = function(config) {
         basePath: './',
 
         files: [
-            'js/app.js',
-            'js/core.js'
+            'js/chaordic.component.js',
+            'js/*.spec.js'
         ],
 
         autoWatch: true,
